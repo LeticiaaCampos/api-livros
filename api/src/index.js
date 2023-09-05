@@ -17,6 +17,6 @@ app.listen(port, () => {
 
 
 //visualizar o json
-//npx nodemon .\src\index.js
+//npx nodemon .\src\index.jsmkdir hello-prisma
 //banco de dados
-//npx prisma studio
+//npx prisma studiocd
