@@ -10,44 +10,68 @@ app.get('/livro', async (req, res) => {
   res.json(livros)
 })
 
-app.get('/livro/:genero', async (req, res) => {
+app.get('/livros/genero/:genero', async (req, res) => {
   const genero = req.params.genero
-  const livro = await prisma.livros.findMany({
-    where: {
-      genero: {
-        contains: genero,
-      }
-    },
-  });
-  if (livro.length !== 0) {
-    res.json(livro)
-  } else {
-    res.send("não existe esse genero")
+  if (!genero) {
+    res.status(400).json({ error: 'Parâmetro de gênero ausente' });
+    return;
+  }
+
+  try {
+    const livros = await prisma.livros.findMany({
+      where: {
+        genero: {
+          contains: genero,
+        },
+      },
+    });
+
+    if (livros.length === 0) {
+      res.status(404).json({ message: 'Nenhum livro encontrado para este gênero' });
+      return;
+    }
+    res.json(livros);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar livros' });
   }
 })
 
-app.get('/livro/:tipo', async (req, res) => {
-  const tipo = req.params.genero
-  const livro = await prisma.livros.findMany({
-    where: {
-      genero: {
-        contains: tipo,
-      }
-    },
-  });
+app.get('/livros/tipo/:tipo', async (req, res) => {
+  const tipo = req.params.tipo;
 
-  if (livro.length !== 0) {
-    res.json(livro)
-  } else {
-    res.send("não existe esse genero")
+  if (!tipo) {
+    res.status(400).json({ error: 'Parâmetro de tipo ausente' });
+    return;
   }
-})
 
+  try {
+    const livros = await prisma.livros.findMany({
+      where: {
+        tipo: {
+          contains: tipo,
+        },
+      },
+    });
+
+    if (livros.length === 0) {
+      res.status(404).json({ message: 'Nenhum livro encontrado para este tipo' });
+      return;
+    }
+
+    res.json(livros);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar livros' });
+  }
+});
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server is running on port ${port}`);
+});
+
+export default prisma
 
 //visualizar o json
 //npx nodemon .\src\index.js
 //banco de dados
 //npx prisma studiocd
+//compilar
+//npx tsc
