@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
+const cors_1 = __importDefault(require("cors"));
 const prisma = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 const port = 3000;
+app.use((0, cors_1.default)());
 app.get('/livro', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const livros = yield prisma.livros.findMany();
     res.json(livros);

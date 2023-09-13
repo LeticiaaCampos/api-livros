@@ -6,10 +6,11 @@ export default function App() {
   const [livros, setLivros] = useState([]);
 
   useEffect(() => {
-    fetch('/livro')
-      .then((response) => response.json())
-      //.then((data) => setLivros(data))
-     // .catch((error) => console.error('Erro na procura do livro:', error));
+    (async () => {
+      const response = await fetch('http://localhost:3000/livro');
+      const data = await response.json();
+      setLivros(data)
+    })()
   }, []);
 
   return (
