@@ -67,11 +67,12 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-export default prisma
 
 //visualizar o json
 //npx nodemon .\src\index.js
 //banco de dados
-//npx prisma studiocd
+//npx prisma studio
 //compilar
 //npx tsc
+//node .\dist\index.js
+// npm run dev

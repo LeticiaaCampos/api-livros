@@ -72,10 +72,11 @@ app.get('/livros/tipo/:tipo', (req, res) => __awaiter(void 0, void 0, void 0, fu
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-exports.default = prisma;
 //visualizar o json
 //npx nodemon .\src\index.js
 //banco de dados
-//npx prisma studiocd
+//npx prisma studio
 //compilar
 //npx tsc
+//node .\dist\index.js
+// npm run dev

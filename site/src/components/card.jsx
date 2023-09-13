@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function Card({ nome, img, autor, sinopse }) {
+export default function Card({  nome, img, autor, sinopse, genero, tipo }) {
     return (
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
         <div className="md:flex-shrink-0">
           <img
@@ -22,7 +22,6 @@ export default function Card({ nome, img, autor, sinopse }) {
         </div>
       </div>
     </div>
-
-    ) 
+  );
 }
  
