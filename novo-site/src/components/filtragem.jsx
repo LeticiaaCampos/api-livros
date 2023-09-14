@@ -25,7 +25,7 @@ export default function Filtro({ setLivros }) {
         const livrosFiltrados = await response.json();
         setLivros(livrosFiltrados);
       } catch (error) {
-       // console.error('Erro ao buscar livros filtrados:', error);
+        //console.error('Erro ao buscar livros filtrados:', error);
       }
     };
 
@@ -33,10 +33,10 @@ export default function Filtro({ setLivros }) {
   }, [tipoFiltro]);
 
   return (
-    <div className=" flex items-center justify-center p-5">
+    <div className=" bg-white/10 flex items-center justify-center p-4 rounded-lg">
       <div className="flex flex-col space-y-4 items-center">
         <div className="flex flex-col space-y-2 w-full">
-          <label htmlFor="genero" className="text-gray-700">Gênero:</label>
+          <label htmlFor="genero" className="text-white">Gênero:</label>
           <select
             id="genero"
             value={generoFiltro}
@@ -52,7 +52,7 @@ export default function Filtro({ setLivros }) {
         </div>
   
         <div className="flex flex-col space-y-2 w-full">
-          <label htmlFor="tipo" className="text-gray-700">Filtrar por Tipo:</label>
+          <label htmlFor="tipo" className="text-white">Tipo:</label>
           <select
             id="tipo"
             value={tipoFiltro}

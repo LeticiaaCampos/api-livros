@@ -12,8 +12,8 @@ export default function Card({ nome, img, autor, sinopse, genero, tipo }) {
     <div>
       <img src={img} className='w-full aspect-[3/4] rounded-lg' alt='Imagem do livro' />
     </div>
-    <div className='flex flex-col gap-4'>
-      <h1>{nome}</h1>
+      <div className='flex flex-col gap-2'>
+        <h1 className='font-bold text-xl'>{nome}</h1>
       <p>{autor}</p>
       {mostrarMais ? (
         <p className='text-sm'>{sinopse}</p>
@@ -23,26 +23,17 @@ export default function Card({ nome, img, autor, sinopse, genero, tipo }) {
       <button onClick={toggleMostrarMais} className='text-red-500 hover:underline'>
         {mostrarMais ? 'Ver Menos' : 'Ver Mais'}
       </button>
-      <div className='flex flex-col gap-4'>
-      <span className='rounded-md bg-primary'>{genero}</span>
-      <span className='rounded-md bg-secondary'>{tipo}</span>
+        <div className='flex flex-col gap-2 items-start '>
+          <div className='flex gap-2'>
+            {genero.split(",").map((g) => {
+              return (
+                <span key={g} className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700'>{g}</span>
+              )
+            })}
+          </div>
+          <span className='bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700'>{tipo}</span>
     </div>
     </div>
   </div>
-
-    // <div className='text-white bg-white/30 p-4 rounded-lg grid grid-cols-2 gap-4'>
-    //   <div>
-    //     <img src={img} className='w-full aspect-[3/4] rounded-lg' />
-    //   </div>
-    //   <div className='flex flex-col gap-4'>
-    //     <h1>{nome}</h1>
-    //     <p>{autor}</p>
-    //     <p className='text-sm'>{sinopse}</p>
-    //   </div>
-    //   <div className='flex flex-col gap-4'>
-    //     <span className='rounded-md	'>{genero}</span>
-    //     <span className='rounded-md	'>{tipo}</span>
-    //   </div>
-    // </div>
   );
 }
