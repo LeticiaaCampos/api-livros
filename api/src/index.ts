@@ -24,9 +24,9 @@ app.get('/livros/genero/:genero', async (req, res) => {
     const livros = await prisma.livros.findMany({
       where: {
         genero: {
-          contains: genero,
-        },
-      },
+          contains: genero
+        }
+      }
     });
 
     if (livros.length === 0) {
