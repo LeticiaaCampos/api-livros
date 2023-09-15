@@ -19,6 +19,7 @@ const prisma = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 const port = 3000;
 app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 app.get('/livro', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const livros = yield prisma.livros.findMany();
     res.json(livros);
@@ -33,9 +34,9 @@ app.get('/livros/genero/:genero', (req, res) => __awaiter(void 0, void 0, void 0
         const livros = yield prisma.livros.findMany({
             where: {
                 genero: {
-                    contains: genero,
-                },
-            },
+                    contains: genero
+                }
+            }
         });
         if (livros.length === 0) {
             res.status(404).json({ message: 'Nenhum livro encontrado para este gênero' });
@@ -62,7 +63,7 @@ app.get('/livros/tipo/:tipo', (req, res) => __awaiter(void 0, void 0, void 0, fu
             },
         });
         if (livros.length === 0) {
-            res.status(404).json({ message: 'Nenhum livro encontrado para este tipo' });
+            res.status(404).json({ error: 'Nenhum livro encontrado para este tipo' });
             return;
         }
         res.json(livros);
@@ -71,6 +72,76 @@ app.get('/livros/tipo/:tipo', (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.status(500).json({ error: 'Erro ao buscar livros' });
     }
 }));
+app.post('/filtro', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const tipo = req.body.tipo;
+    const genero = req.body.genero;
+    if (!tipo && !genero) {
+        return res.status(400).json({ error: 'Parâmetros de tipo e gênero ausentes' });
+    }
+    try {
+        let livros;
+        if (tipo === 'Todos' && genero === 'Todos') {
+            livros = yield prisma.livros.findMany();
+        }
+        else if (tipo === 'Todos') {
+            livros = yield prisma.livros.findMany({
+                where: {
+                    genero: genero,
+                },
+            });
+        }
+        else if (genero === 'Todos') {
+            livros = yield prisma.livros.findMany({
+                where: {
+                    tipo: tipo
+                },
+            });
+        }
+        else {
+            livros = yield prisma.livros.findMany({
+                where: {
+                    AND: [
+                        {
+                            tipo: tipo,
+                        },
+                        {
+                            genero: genero
+                        }
+                    ]
+                }
+            });
+        }
+        if (livros.length === 0) {
+            return res.status(404).json({ error: 'Não há livros nessa categoria e tipo' });
+        }
+        res.status(200).json(livros);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar livros' });
+    }
+}));
+// app.post("/filtro", async (req, res) => {
+//   const tipo: string = req.body.tipo
+//   const genero: string = req.body.genero
+//   if (tipo === "Todos") {
+//   }
+//   const livros = await prisma.livros.findMany({
+//     where: {
+//       AND: [
+//         {
+//           tipo: tipo,
+//         },
+//         {
+//           genero: genero
+//         }
+//       ]
+//     }
+//   })
+//   if (livros.length === 0) {
+//     return res.status(404).json({ message: 'não há livros nessa categoria e tipo' })
+//   }
+//   res.status(200).json({ livros: livros })
+// })
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

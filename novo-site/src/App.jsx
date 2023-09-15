@@ -14,7 +14,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-black p-4 flex flex-col gap-4">
+    <div className="min-h-screen bg-black p-4 flex flex-col gap-4">
       <Filtro setLivros={setLivros} />
       <div className="grid grid-cols-3 gap-4">
         {livros.map((livro) => (
@@ -30,5 +30,5 @@ export default function App() {
         ))}
       </div>
     </div>
-  );
+  );       
 }

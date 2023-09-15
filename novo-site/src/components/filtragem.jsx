@@ -1,36 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Filtro({ setLivros }) {
-  const [generoFiltro, setGeneroFiltro] = useState('todos');
-  const [tipoFiltro, setTipoFiltro] = useState('todos');
+  const genero = useRef("Todos")
+  const tipo = useRef("Todos")
 
-  useEffect(() => {
-    const buscarLivrosFiltrados = async () => {
-      try {
-        const response = await fetch(`/livros/genero/${generoFiltro}`);
-        const livrosFiltrados = await response.json();
-        setLivros(livrosFiltrados);
-      } catch (error) {
-        //console.error('Erro ao buscar livros filtrados:', error);
-      }
-    };
-
-    buscarLivrosFiltrados();
-  }, [generoFiltro]);
-
-  useEffect(() => {
-    const buscarLivrosFiltrados = async () => {
-      try {
-        const response = await fetch(`/livros/tipo/${tipoFiltro}`);
-        const livrosFiltrados = await response.json();
-        setLivros(livrosFiltrados);
-      } catch (error) {
-        //console.error('Erro ao buscar livros filtrados:', error);
-      }
-    };
-
-    buscarLivrosFiltrados();
-  }, [tipoFiltro]);
+  const handleFiltro = async () => {
+    const body = {
+      tipo: tipo.current,
+      genero: genero.current
+    }
+    console.log(body)
+    const response = await fetch('http://localhost:3000/filtro', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body)
+    })
+    const data = await response.json()
+    setLivros(data)
+  }
 
   return (
     <div className=" bg-white/10 flex items-center justify-center p-4 rounded-lg">
@@ -39,11 +28,10 @@ export default function Filtro({ setLivros }) {
           <label htmlFor="genero" className="text-white">Gênero:</label>
           <select
             id="genero"
-            value={generoFiltro}
-            onChange={(e) => setGeneroFiltro(e.target.value)}
+            onChange={(e) => genero.current = e.target.value}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           >
-            <option value="todos">Todos</option>
+            <option value="Todos">Todos</option>
             <option value="Ficção">Ficção</option>
             <option value="Romance">Romance</option>
             <option value="Drama">Drama</option>
@@ -55,8 +43,7 @@ export default function Filtro({ setLivros }) {
           <label htmlFor="tipo" className="text-white">Tipo:</label>
           <select
             id="tipo"
-            value={tipoFiltro}
-            onChange={(e) => setTipoFiltro(e.target.value)}
+            onChange={(e) => tipo.current = e.target.value}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           >
               <option value="Todos">Todos</option>
@@ -65,6 +52,9 @@ export default function Filtro({ setLivros }) {
             <option value="Mangás">Mangás</option>
           </select>
         </div>
+        <button className="text-white bg-white/20 p-2 px-4" onClick={() => handleFiltro()}>
+          Procurar
+        </button>
       </div>
   </div>
   );
